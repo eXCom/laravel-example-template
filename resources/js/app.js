@@ -1,12 +1,25 @@
-import './bootstrap';
-
 import { createApp } from 'vue';
+import App from './App.vue';
+import { createRouter, createWebHistory } from 'vue-router';
+import './css/global.css';
 
-import Welcome from './Welcome.vue';
-import ExampleComponent from './components/ExampleComponent.vue'; // Import your component
+// Import your components (pages)
+import HomePage from './pages/HomePage.vue';
+import ContactPage from './pages/ContactPage.vue'; // Assuming you've already created it
 
-const app = createApp({});
-app.component('example-component', ExampleComponent);
-app.component('Welcome', Welcome);
+// Define the routes
+const routes = [
+    { path: '/', component: HomePage },
+    { path: '/contact', component: ContactPage }, // Route for the Contact page
+];
 
-app.mount('#app');
+// Create the router instance
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
+});
+
+// Create and mount the app
+createApp(App)
+    .use(router) // Use the router
+    .mount('#app');
