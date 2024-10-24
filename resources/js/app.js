@@ -22,10 +22,22 @@ const vuetify = createVuetify({
 // Import your components (pages)
 import HomePage from './pages/HomePage.vue';
 import ContactPage from './pages/ContactPage.vue'; // Assuming you've already created it
+import RegisterPage from "./pages/Auth/RegisterPage.vue";
+import LoginPage from "./pages/Auth/LoginPage.vue";
+import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage.vue";
+import ConfirmPasswordPage from "./pages/Auth/ConfirmPasswordPage.vue";
+import EmailVerificationPage from "./pages/Auth/EmailVerificationPage.vue";
+import ResetPasswordPage from "./pages/Auth/ResetPasswordPage.vue";
 
 // Define the routes
 const routes = [
     { path: '/', component: HomePage },
+    { path: '/register', component: RegisterPage },
+    { path: '/login', component: LoginPage },
+    { path: '/forgot-password', component: ForgotPasswordPage },
+    { path: '/confirm-password', component: ConfirmPasswordPage },
+    { path: '/email-verification', component: EmailVerificationPage },
+    { path: '/reset-password', component: ResetPasswordPage },
     { path: '/contact', component: ContactPage }, // Route for the Contact page
 ];
 
