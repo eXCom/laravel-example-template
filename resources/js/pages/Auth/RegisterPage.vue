@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data() {
         return {
@@ -92,10 +93,25 @@ export default {
         };
     },
     methods: {
-        submitForm() {
-            if (this.$refs.form.validate()) {
-                alert('Registration successful!');
+        async submitForm() {
+          if (this.$refs.form.validate()) {
+            try {
+              const response = await axios.post('/register', {
+                name: this.name,
+                email: this.email,
+                password: this.password,
+                password_confirmation: this.confirmPassword,
+              });
+              // Redirect or show success message
+              alert('Registration successful!');
+              this.$router.push('/login');
+            } catch (error) {
+              if (error.response && error.response.data.errors) {
+                // Display error messages if needed
+                alert('Registration failed: ' + error.response.data.message);
+              }
             }
+          }
         },
         goToHomePage() {
             this.$router.push('/');

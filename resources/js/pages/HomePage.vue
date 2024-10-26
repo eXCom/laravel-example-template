@@ -7,15 +7,19 @@
                     <li><a href="#features">Features</a></li>
                     <li><a href="#about">About</a></li>
                     <li><router-link to="/contact">Contact Us</router-link></li>
-                    <li><router-link to="/login">Login</router-link></li>
-                    <li><router-link to="/register">Register</router-link></li>
+                    <li v-if="!isAuthenticated"><router-link to="/login">Login</router-link></li>
+                    <li v-if="!isAuthenticated"><router-link to="/register">Register</router-link></li>
+                    <li v-else>
+                      <button @click="logout" class="logout-button">Logout</button>
+                    </li>
                 </ul>
             </nav>
         </header>
 
         <section class="hero">
             <div class="content">
-                <h1>Welcome to My Laravel Application</h1>
+                <h1 v-if="isAuthenticated">Welcome, {{ userName }} to My Laravel Application</h1>
+                <h1 v-else>Welcome to My Laravel Application</h1>
                 <p>Building modern web apps with Laravel and Vue.js.</p>
                 <button class="cta-button" @click="redirectToLogin">Get Started</button>
             </div>
@@ -46,11 +50,33 @@
 </template>
 
 <script>
+import { getToken, removeToken } from '@/auth';
 export default {
-    name: 'Welcome',
+    data() {
+      return {
+        isAuthenticated: !!getToken(), // Initialize with the current token state
+        userName: '',
+      };
+    },
+    mounted() {
+      this.setUserName();
+    },
     methods: {
+        setUserName() {
+          const user = JSON.parse(localStorage.getItem('user'));
+          if (user) {
+            this.userName = user.name; // Assuming user object has a 'name' property
+          }
+        },
         redirectToLogin() {
             window.location.href = '/login';
+        },
+        logout() {
+          removeToken(); // Clear the token
+          localStorage.removeItem('user');
+          this.isAuthenticated = false;
+          this.userName = '';
+          this.$router.push('/'); // Redirect to homepage after logout
         },
     },
 };
@@ -164,5 +190,17 @@ body {
     color: white;
     padding: 20px;
     margin-top: 40px;
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  color: #ecf0f1;
+  font-size: 1.1em;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  text-decoration: underline;
 }
 </style>

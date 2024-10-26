@@ -62,6 +62,8 @@
 </template>
 
 <script>
+import axios from '@/axios';
+import { setToken } from '@/auth';
 export default {
   data() {
     return {
@@ -76,9 +78,23 @@ export default {
     };
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       if (this.$refs.form.validate()) {
-        alert('Login successful!');
+        try {
+          const response = await axios.post('/api/login', {
+            email: this.email,
+            password: this.password,
+          });
+
+          setToken(response.data.token); // Save the token
+          console.log(response);
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+          alert('Login successful!');
+          this.$router.push('/'); // Or your preferred logged-in route
+
+        } catch (error) {
+          alert('Login failed: ' + error.response.data.message);
+        }
       }
     },
     goToHomePage() {
