@@ -73,6 +73,7 @@
 
 <script>
 import axios from 'axios';
+import { setToken } from '@/auth';
 export default {
     data() {
         return {
@@ -102,8 +103,8 @@ export default {
                 password: this.password,
                 password_confirmation: this.confirmPassword,
               });
-              // Redirect or show success message
-              alert('Registration successful!');
+
+              localStorage.setItem('registerSuccessMessage', response.data.message);
               this.$router.push('/login');
             } catch (error) {
               if (error.response && error.response.data.errors) {

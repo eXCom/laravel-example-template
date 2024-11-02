@@ -32,6 +32,10 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <v-snackbar v-model="snackbarVisible" :timeout="3000" color="success">
+      {{ snackbarMessage }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -44,12 +48,16 @@ export default {
         required: (value) => !!value || 'Required.',
         email: (value) => /.+@.+\..+/.test(value) || 'E-mail must be valid.',
       },
+      snackbarVisible: false,
+      snackbarMessage: '',
     };
   },
   methods: {
     submitForm() {
       if (this.$refs.form.validate()) {
-        alert('Password reset link sent!');
+        this.snackbarMessage = 'Password-reset link has been sent to: ' + this.email;
+        this.snackbarVisible = true;
+        this.email = "";
       }
     },
     goToLoginPage() {

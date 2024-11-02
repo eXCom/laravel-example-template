@@ -58,6 +58,10 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <v-snackbar v-model="snackbarVisible" :timeout="3000" color="success">
+      {{ snackbarMessage }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -75,7 +79,12 @@ export default {
         email: (value) =>
             /.+@.+\..+/.test(value) || 'E-mail must be valid.',
       },
+      snackbarVisible: false,
+      snackbarMessage: '',
     };
+  },
+  mounted() {
+    this.checkRegisterMessage();
   },
   methods: {
     async submitForm() {
@@ -87,11 +96,8 @@ export default {
           });
 
           setToken(response.data.token); // Save the token
-          console.log(response);
           localStorage.setItem('user', JSON.stringify(response.data.user));
-          alert('Login successful!');
-          this.$router.push('/'); // Or your preferred logged-in route
-
+          this.$router.push({ path: '/', query: { login: 'success' } });
         } catch (error) {
           alert('Login failed: ' + error.response.data.message);
         }
@@ -99,6 +105,14 @@ export default {
     },
     goToHomePage() {
       this.$router.push('/');
+    },
+    checkRegisterMessage() {
+      const message = localStorage.getItem('registerSuccessMessage');
+      if (message) {
+        this.snackbarMessage = message;
+        this.snackbarVisible = true;
+        localStorage.removeItem('registerSuccessMessage'); // Clear after showing
+      }
     },
   },
 };
