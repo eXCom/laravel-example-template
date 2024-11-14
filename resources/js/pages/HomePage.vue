@@ -20,7 +20,7 @@
       <div class="content">
         <h1 v-if="isAuthenticated">Welcome, {{ userName }} to My Laravel Application</h1>
         <h1 v-else>Welcome to My Laravel Application</h1>
-        <p>Building modern web apps with Laravel and Vue.js.</p>
+        <p>Building modern web apps with Laravel and Vue.js. testbranch</p>
         <button class="cta-button" @click="redirectToLogin">Get Started</button>
       </div>
     </section>
